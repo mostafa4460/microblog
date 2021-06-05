@@ -1,0 +1,21 @@
+.Navbar {
+    background-color: #eeeeee;
+    border-radius: 20px;
+    padding: 100px;
+    margin-bottom: 20px;
+}
+
+.Navbar h5 {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.Navbar a {
+    margin-right: 20px;
+}
+.Navbar a:hover {
+    text-decoration: none;
+}
+.Navbar .active {
+    font-weight: bold !important;
+}
