@@ -1,5 +1,7 @@
 import {useState} from 'react';
 import {useParams, useHistory} from 'react-router-dom';
+import {useSelector, shallowEqual, useDispatch} from 'react-redux';
+import {deletePost} from '../actions';
 import {Typography, IconButton, Divider} from '@material-ui/core';
 import {Edit, Delete} from '@material-ui/icons';
 import PostForm from './PostForm';
@@ -8,9 +10,14 @@ import './PostDetails.css';
 
 const PostDetails = ({posts}) => {
     const [editing, setEditing] = useState(false);
+    const dispatch = useDispatch();
     const history = useHistory();
     const {id} = useParams();
-    const post = posts.find(p => p.id === +id);
+    const post = useSelector(state => state[id], shallowEqual);
+    const deleteExistingPost = () => {
+        dispatch(deletePost(id));
+        history.push('/');
+    };
 
     let component;
     if (!post) {
@@ -18,7 +25,7 @@ const PostDetails = ({posts}) => {
         component = null;
     } else if (editing === true) {
         const INITIAL_FORM = {title: post.title, description: post.description, body: post.body};
-        component = <PostForm initialForm={INITIAL_FORM} title="Edit Post" />
+        component = <PostForm initialForm={INITIAL_FORM} title="Edit Post" editing={editing} setEditing={setEditing} />
     } else {
         component = (
             <>
@@ -29,8 +36,8 @@ const PostDetails = ({posts}) => {
                     <IconButton onClick={() => setEditing(true)}>
                         <Edit color="primary" fontSize="large" />
                     </IconButton>
-                    <IconButton>
-                        <Delete color="secondary" fontSize="large" />
+                    <IconButton onClick={deleteExistingPost}>
+                        <Delete color="secondary" fontSize="large"  />
                     </IconButton>
                 </div>
                 <Typography component="p" className="PostDetails-description">
@@ -40,7 +47,7 @@ const PostDetails = ({posts}) => {
                     {post.body}
                 </Typography>
                 <Divider className="PostDetails-divider" />
-                <Comments comments={post.comments} />
+                <Comments comments={post.comments} postId={id} />
             </>
         );
     };

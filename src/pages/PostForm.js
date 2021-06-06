@@ -1,15 +1,29 @@
 import {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {addPost, editPost} from '../actions';
+import {v4 as uuid} from 'uuid';
 import {Typography, TextField, Button} from '@material-ui/core';
 import './PostForm.css';
 
-const PostForm = ({initialForm, title}) => {
+const PostForm = ({initialForm, title, editing, setEditing}) => {
     const [form, setForm] = useState(initialForm);
     const history = useHistory();
-    const cancel = () => history.push('/');
+    const {id} = useParams();
+    const dispatch = useDispatch();
     const handleChange = e => {
         const {name, value} = e.target;
         setForm(oldData => ({ ...oldData, [name]: value }));
+    };
+    const cancel = () => history.push('/');
+    const addNewPost = () => {
+        const newId = uuid();
+        dispatch(addPost(newId, form));
+        history.push('/');
+    };
+    const editExistingPost = () => {
+        dispatch(editPost(id, form));
+        setEditing(false);
     };
 
     return (
@@ -51,7 +65,7 @@ const PostForm = ({initialForm, title}) => {
                     value={form.body}
                     onChange={handleChange} 
                 />
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={editing ? editExistingPost : addNewPost}>
                     Save
                 </Button>
                 <Button variant="contained" color="secondary" onClick={cancel}>
