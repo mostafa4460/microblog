@@ -8,7 +8,7 @@ import './Home.css';
 const Home = () => {
     const titles = useSelector(state => state.titles, shallowEqual);
     const dispatch = useDispatch();
-    useEffect(() => dispatch(getTitles()), [dispatch, titles]);
+    useEffect(() => dispatch(getTitles()), [dispatch]);
 
     let home;
     if (titles.length === 0) home = <CircularProgress className="spinner" />;

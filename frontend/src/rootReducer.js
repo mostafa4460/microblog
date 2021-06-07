@@ -5,7 +5,8 @@ import {
     EDITED_POST, 
     DELETED_POST, 
     ADDED_COMMENT, 
-    DELETED_COMMENT
+    DELETED_COMMENT,
+    CHANGED_VOTE
 } from './actionTypes';
 
 const INITIAL_STATE = {titles: [], posts: {}}
@@ -34,7 +35,8 @@ const rootReducer = (state=INITIAL_STATE, action) => {
                     {
                         id: action.post.id, 
                         title: action.post.title, 
-                        description: action.post.description
+                        description: action.post.description,
+                        votes: action.post.votes
                     }
                 ],
                 posts: {
@@ -50,7 +52,8 @@ const rootReducer = (state=INITIAL_STATE, action) => {
                         return ({
                             id: action.post.id,
                             title: action.post.title,
-                            description: action.post.description
+                            description: action.post.description,
+                            votes: action.post.votes
                         })
                     } else {
                         return title
@@ -90,12 +93,33 @@ const rootReducer = (state=INITIAL_STATE, action) => {
         case DELETED_COMMENT:
             return {
                 ...state,
-                title: [...state.titles],
+                titles: [...state.titles],
                 posts: {
                     ...state.posts,
                     [action.postId]: {
                         ...state.posts[action.postId],
                         comments: state.posts[action.postId].comments.filter(comment => comment.id !== action.commentId)
+                    }
+                }
+            };
+        case CHANGED_VOTE:
+            return {
+                ...state,
+                titles: state.titles.map(title => {
+                    if (title.id === action.postId) {
+                        return {
+                            ...title,
+                            votes: action.votes
+                        }
+                    } else {
+                        return title
+                    }
+                }),
+                posts: {
+                    ...state.posts,
+                    [action.postId]: {
+                        ...state.posts[action.postId],
+                        votes: action.votes
                     }
                 }
             };

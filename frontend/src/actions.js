@@ -6,7 +6,8 @@ import {
     EDITED_POST, 
     DELETED_POST,
     ADDED_COMMENT,
-    DELETED_COMMENT
+    DELETED_COMMENT,
+    CHANGED_VOTE
 } from './actionTypes';
 
 const BASE_URL = "http://localhost:5000/api/posts";
@@ -97,4 +98,17 @@ const deletedComment = (postId, commentId) => ({
     type: DELETED_COMMENT,
     postId,
     commentId
+});
+
+export const changeVote = (postId, direction) => {
+    return async function (dispatch) {
+        const {data} = await axios.post(`${BASE_URL}/${postId}/vote/${direction}`);
+        dispatch(changedVote(postId, data.votes));
+    };
+};
+
+const changedVote = (postId, votes) => ({
+    type: CHANGED_VOTE,
+    postId,
+    votes
 });

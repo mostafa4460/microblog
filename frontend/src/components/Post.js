@@ -1,19 +1,34 @@
 import {useHistory} from 'react-router-dom';
-import {Typography} from '@material-ui/core';
+import {
+    Card, 
+    CardContent, 
+    CardActionArea, 
+    Typography, 
+    Divider
+} from '@material-ui/core';
+import Votes from './Votes';
 import './Post.css';
 
-const Post = ({id, title, description}) => {
+const Post = ({id, title, description, votes}) => {
     const history = useHistory();
 
     return (
-        <div className="Post" onClick={() => history.push(`/${id}`)} >
-            <Typography variant="h6" component="h6" color="primary">
-                {title}
-            </Typography> 
-            <Typography component="em">
-                {description}
-            </Typography> 
-        </div>
+        <Card elevation={0} className="Post">
+            <CardActionArea onClick={() => history.push(`/${id}`)}>
+                <CardContent>
+                    <Typography variant="h6" component="h6" color="primary">
+                        {title}
+                    </Typography> 
+                    <Typography component="em">
+                        {description}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <Divider />
+            <CardContent className="Post-votes-area">
+                <Votes postId={id} votes={votes} />
+            </CardContent>
+        </Card>
     );
 };
 

@@ -7,8 +7,12 @@
     flex: 1;
 }
 
+.PostDetails-2nd-header {
+    display: flex;
+}
 .PostDetails-description {
     margin-bottom: 15px !important;
+    flex: 1
 }
 
 .PostDetails-divider {

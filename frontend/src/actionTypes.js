@@ -5,3 +5,4 @@ export const EDITED_POST = 'EDITED_POST';
 export const DELETED_POST = 'DELETED_POST';
 export const ADDED_COMMENT = 'ADDED_COMMENT';
 export const DELETED_COMMENT = 'DELETED_COMMENT';
+export const CHANGED_VOTE = 'CHANGED_VOTE';

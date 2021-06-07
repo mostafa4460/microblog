@@ -6,6 +6,7 @@ import {Typography, IconButton, Divider, CircularProgress} from '@material-ui/co
 import {Edit, Delete} from '@material-ui/icons';
 import PostForm from './PostForm';
 import Comments from '../components/Comments';
+import Votes from '../components/Votes';
 import './PostDetails.css';
 
 const PostDetails = () => {
@@ -34,16 +35,19 @@ const PostDetails = () => {
                     <Typography variant="h4" component="h4" className="PostDetails-title">
                         {post.title}
                     </Typography>
-                    <IconButton onClick={() => setEditing(true)}>
-                        <Edit color="primary" fontSize="large" />
+                    <IconButton size="small" onClick={() => setEditing(true)}>
+                        <Edit color="primary" />
                     </IconButton>
-                    <IconButton onClick={handleDelete}>
-                        <Delete color="secondary" fontSize="large"  />
+                    <IconButton size="small" onClick={handleDelete}>
+                        <Delete color="secondary"  />
                     </IconButton>
                 </div>
-                <Typography component="p" className="PostDetails-description">
-                    <em>{post.description}</em>
-                </Typography>
+                <div className="PostDetails-2nd-header">
+                    <Typography component="p" className="PostDetails-description">
+                        <em>{post.description}</em>
+                    </Typography>
+                    <Votes postId={post.id} votes={post.votes} />
+                </div>
                 <Typography component="p">
                     {post.body}
                 </Typography>

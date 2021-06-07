@@ -1,0 +1,10 @@
+.Votes-up {
+    color: green;
+}
+.Votes-down {
+    color: red;
+}
+
+.Votes-up-btn {
+    margin-left: 5px !important;
+}
