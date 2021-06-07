@@ -1,39 +1,32 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addComment, deleteComment} from '../actions';
-import {v4 as uuid} from 'uuid';
 import {Typography, IconButton, TextField, Button} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
 
 const Comments = ({comments, postId}) => {
-    const [input, setInput] = useState("");
+    const [input, setInput] = useState({text: ""});
     const dispatch = useDispatch();
-    const handleChange = e => setInput(e.target.value);
+    const handleChange = e => setInput({text: e.target.value});
     const addNewComment = () => {
-        setInput("");
-        dispatch(addComment(postId, uuid(), input));
+        dispatch(addComment(postId, input));
+        setInput({text: ""});
     };
     const deleteExistingComment = commentId => dispatch(deleteComment(postId, commentId));
-
-    const commentsJSX = [];
-    for (let [key, value] of Object.entries(comments)) {
-        let comment = (
-            <div key={key} style={{marginTop: "10px"}}>
-                <IconButton color="secondary" size="small" onClick={() => deleteExistingComment(key)}>
-                    <Close />
-                </IconButton>
-                <p style={{display: "inline"}}>{value}</p>
-            </div>
-        );
-        commentsJSX.push(comment);
-    };
 
     return (
         <>
             <Typography variant="h5" component="h5">
                 Comments
             </Typography>
-            {commentsJSX}
+            {comments.map(({ id, text }) => (
+                <div key={id} style={{marginTop: "10px"}}>
+                    <IconButton color="secondary" size="small" onClick={() => deleteExistingComment(id)}>
+                        <Close />
+                    </IconButton>
+                    <p style={{display: "inline"}}>{text}</p>
+                </div>
+            ))}
             <TextField 
                 required  
                 fullWidth 
@@ -41,7 +34,7 @@ const Comments = ({comments, postId}) => {
                 margin="normal"
                 variant="outlined"
                 size="small"
-                value={input}
+                value={input.text}
                 onChange={handleChange}
             />
             <Button

@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {addPost, editPost} from '../actions';
-import {v4 as uuid} from 'uuid';
 import {Typography, TextField, Button} from '@material-ui/core';
 import './PostForm.css';
 
@@ -17,8 +16,7 @@ const PostForm = ({initialForm, title, editing, setEditing}) => {
     };
     const cancel = () => history.push('/');
     const addNewPost = () => {
-        const newId = uuid();
-        dispatch(addPost(newId, form));
+        dispatch(addPost(form));
         history.push('/');
     };
     const editExistingPost = () => {
